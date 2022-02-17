@@ -1,0 +1,14 @@
+<html>
+
+<body>
+    <h1>Hello Symport!!!</h1>
+    <ul>
+        {%for invoice in NotInvoiced%}
+        <li>
+            {{invoice.id}}
+        </li>
+        {%endfor%}
+    </ul>
+</body>
+
+</html>
