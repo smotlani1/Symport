@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'playground',
     'debug_toolbar',
     
+    
 ]
 
 MIDDLEWARE = [
@@ -141,7 +142,6 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
-
 
 LOGIN_REDIRECT_URL = '/loads/viewloads'
 LOGIN_URL = '/login'

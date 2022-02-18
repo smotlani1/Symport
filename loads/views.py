@@ -32,6 +32,14 @@ class LoadImageViewSet(ModelViewSet):
         return LoadImage.objects.filter(load_id=self.kwargs["load_pk"])
 
 
+class LoadImageSecondaryViewSet(ModelViewSet):
+    serializer_class = LoadImageSerializer
+    
+    def get_serializer_context(self):
+        return {'load_id': self.kwargs['pk']}
+    
+    def get_queryset(self):
+        return LoadImage.objects.filter(load_id=self.kwargs["pk"])
 
 
 

@@ -82,5 +82,5 @@ class Load(models.Model):
 
 
 class LoadImage(models.Model):
-    load = models.ForeignKey(Load, on_delete=models.CASCADE)
+    load = models.ForeignKey(Load, on_delete=models.CASCADE, related_name='loadimage')
     image = models.ImageField(upload_to='loads/images')
