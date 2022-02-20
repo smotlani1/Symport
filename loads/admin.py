@@ -17,6 +17,9 @@ class LoadAdmin(admin.ModelAdmin):
     search_fields = ['load_reference']
     inlines = [LoadImageInLine]
     
+    def queryset(self, request):
+        return super(Load, self).get_queryset(request).select_related('invoice').select_related("customer")
+
     @admin.action(description="Create Invoices")
     def generate_invoices(self, request, queryset):
         load_list = list(queryset)
