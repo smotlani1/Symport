@@ -16,6 +16,7 @@ djangorestframework-simplejwt = "*"
 pillow = "*"
 drf-nested-routers = "*"
 django-cors-headers = "*"
+googlemaps = "*"
 
 [dev-packages]
 

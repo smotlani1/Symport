@@ -1,4 +1,5 @@
 import openpyxl as xl
+import os
 
 
 class InvoiceItem():
@@ -20,18 +21,29 @@ class Customers():
 
 
 class Invoices():
-    def __init__(self, customer: Customers, file_name):
+    def __init__(self, customer: Customers):
         self.item_list = []
         self.customer = customer
-        self.file_name = file_name
+        # self.file_name = file_name
 
     def add_item(self, description, unit_price, qty):
         self.item_list.append(InvoiceItem(description, qty, unit_price))
 
-    def create_invoice(self):
-        path = "/Users/sm/Desktop/Symport/Invoices/"
-        file_name = "Symport_Invoice_Template.xlsx"
-        wb = xl.load_workbook(path + file_name)
+    def create_directory(self, directory):
+        parent_dir = "/Users/sm/Desktop/Symport"
+        path = os.path.join(parent_dir, directory)
+        if os.path.isdir(path):
+            return path
+        os.makedirs(path)
+        return path
+
+    def create_invoice(self, directory, file_name):
+        
+        path = self.create_directory(directory)
+
+        template_path = "/Users/sm/Desktop/Symport/Invoices"
+        template_file_name = "/Symport_Invoice_Template.xlsx"
+        wb = xl.load_workbook(template_path + template_file_name)
         sheet = wb["Invoice"]
 
 
@@ -49,7 +61,7 @@ class Invoices():
             sheet.cell(row=row_increment, column=7).value = item.unit_price
             row_increment += 1
 
-        wb.save(path + self.file_name + ".xlsx")
+        wb.save(path + "/" + file_name + ".xlsx")
 
 
 # customer = Customer("detailed", "9219 Knight Ave", "Des Plaines", "IL", "60016", "77334994", "smotlani@yahoo.com")

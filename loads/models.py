@@ -5,6 +5,7 @@ from statistics import mode
 from django.db import models
 from django.forms import DateTimeField
 from django.contrib.auth.models import User
+from .SupportingFunctions import get_distance_zips
 
 # Create your models here.
 class Customer(models.Model):
@@ -16,12 +17,15 @@ class Customer(models.Model):
     state = models.CharField(max_length=255)
     zip = models.CharField(max_length=255)
 
+    def __str__(self) -> str:
+        return str(self.name)
 
 
 
 class Invoice(models.Model):
     STATUS_PAID_CHOICES = [
         ('N', "Not Invoiced"),
+        ('G', "Generated"),
         ('I', "Invoiced"),
         ('P', "Paid"),
     ]
@@ -65,7 +69,7 @@ class Load(models.Model):
     end_state = models.CharField(max_length=255)
     end_zip = models.CharField(max_length=255)
 
-    loaded_distance = models.IntegerField()
+    loaded_distance = models.IntegerField(null=True, blank=True)
 
     hazmat = models.BooleanField(default=False)
 
@@ -76,6 +80,9 @@ class Load(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
 
+    def save(self, *args, **kwargs):
+        self.loaded_distance = get_distance_zips(self.start_zip, self.end_zip)
+        super(Load, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.load_reference

@@ -22,10 +22,13 @@ class LoadAdmin(admin.ModelAdmin):
         load_list = list(queryset)
 
         for load in load_list:
+            directory = load.customer.name + "/" + load.load_reference
             customer = Customers(load.customer.name, load.customer.street, load.customer.city, load.customer.state, load.customer.zip, load.customer.phone, load.customer.email)
-            new_invoice = Invoices(customer, load.load_reference)
+            new_invoice = Invoices(customer)
             new_invoice.add_item(load.load_reference, load.invoice.amount_invoiced, qty=1)
-            new_invoice.create_invoice()
+            new_invoice.create_invoice(directory, load.load_reference)
+        Invoice.objects.filter(id__in=queryset).update(payment_status="G")
+            
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
