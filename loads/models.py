@@ -79,7 +79,9 @@ class Load(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.PROTECT)
     driver = models.ForeignKey(Driver, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
-
+    
+    #over ride save method to auto populate and calculate distance using google Maps API based function when 
+    #adding load information at time of creation
     def save(self, *args, **kwargs):
         self.loaded_distance = get_distance_zips(self.start_zip, self.end_zip)
         super(Load, self).save(*args, **kwargs)
