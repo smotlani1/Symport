@@ -76,7 +76,7 @@ class Load(models.Model):
     load_reference = models.TextField(null=True)
 
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
-    invoice = models.ForeignKey(Invoice, on_delete=models.PROTECT)
+    invoice = models.ForeignKey(Invoice, on_delete=models.PROTECT, related_name="LoadInvoice")
     driver = models.ForeignKey(Driver, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     
