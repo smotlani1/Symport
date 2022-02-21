@@ -3,6 +3,7 @@ from .models import *
 from datetime import date, timedelta
 from .Invoices import InvoiceItem, Customers, Invoices
 import openpyxl as xl
+from shutil import move
 
 
 # Register your models here.
@@ -31,7 +32,11 @@ class LoadAdmin(admin.ModelAdmin):
             new_invoice.add_item(load.load_reference, load.invoice.amount_invoiced, qty=1)
             new_invoice.create_invoice(directory, load.load_reference)
         Invoice.objects.filter(id__in=queryset).update(payment_status="G")
-            
+        image_list = list(LoadImage.objects.filter(id__in=queryset))
+        for image in image_list:
+            src_path = "/Users/sm/Desktop/comp sci/personal projects/symport/media/" + str(image.image)
+            dest_path = "/Users/sm/Desktop/Symport/" + image.load.customer.name + "/" + image.load.load_reference
+            move(src_path, dest_path)
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
@@ -60,6 +65,7 @@ class InvoiceDateFilter(admin.SimpleListFilter):
 class InvoiceLoadsInLine(admin.TabularInline):
     model = Load
     extra = 0
+
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
     inlines = [InvoiceLoadsInLine]
