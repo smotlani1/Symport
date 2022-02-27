@@ -2,6 +2,9 @@ import openpyxl as xl
 import os
 
 
+# This script creates a basic excel invoice. Class InvoiceItems and Customers store relevant invoice data based on user input
+# This data is then refernced by the Invoice class in order to generate the invoice. 
+
 class InvoiceItem():
     def __init__(self, description, qty, unit_price):
         self.description = description
@@ -24,11 +27,14 @@ class Invoices():
     def __init__(self, customer: Customers):
         self.item_list = []
         self.customer = customer
-        # self.file_name = file_name
+        
 
+    # Add separate items to be invoiced on the same invoice
     def add_item(self, description, unit_price, qty):
         self.item_list.append(InvoiceItem(description, qty, unit_price))
 
+    # Determine where the invoice should be saved to on the local drive. Create new directory based on user input
+    # if one does not already exist
     def create_directory(self, directory):
         parent_dir = "/Users/sm/Desktop/Symport"
         path = os.path.join(parent_dir, directory)
@@ -37,6 +43,8 @@ class Invoices():
         os.makedirs(path)
         return path
 
+    # this function generates the final invoice using information passed through from the functions above. 
+    # The function uses a pre generated excel template. 
     def create_invoice(self, directory, file_name):
         
         path = self.create_directory(directory)
@@ -55,6 +63,7 @@ class Invoices():
 
         row_increment = 16
 
+        # Add each item to be invoiced to the invoice
         for item in self.item_list:
             sheet.cell(row=row_increment, column=1).value = item.description
             sheet.cell(row=row_increment, column=6).value = item.qty
@@ -62,6 +71,8 @@ class Invoices():
             row_increment += 1
 
         wb.save(path + "/" + file_name + ".xlsx")
+
+
 
 
 # customer = Customer("detailed", "9219 Knight Ave", "Des Plaines", "IL", "60016", "77334994", "smotlani@yahoo.com")

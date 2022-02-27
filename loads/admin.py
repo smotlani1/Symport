@@ -22,17 +22,17 @@ class LoadAdmin(admin.ModelAdmin):
     search_fields = ['load_reference']
     inlines = [LoadImageInLine]
     
-    #Override base queryset to select related foreign key fields for optimization. 
+    #Override base queryset to select related foreign key fields to reduce number of queries. 
     def queryset(self, request):
         return super(Load, self).get_queryset(request).select_related('invoice').select_related("customer")
 
-    #Custom admin action to generate multiple invoices for several loads at once
+    #Custom admin action to generate multiple invoices for several loads at once. Takes input from admin request
     @admin.action(description="Create Invoices")
     def generate_invoices(self, request, queryset):
         load_list = list(queryset)
 
         # Get load object and use it to autpopulate and create invoice with customer, load, and invoice data. Automatically 
-        # create directory based on load_reference number. 
+        # create local directory based on load_reference number. 
         for load in load_list:
             directory = load.customer.name + "/" + load.load_reference
             customer = Customers(load.customer.name, load.customer.street, load.customer.city, load.customer.state, load.customer.zip, load.customer.phone, load.customer.email)
@@ -44,7 +44,7 @@ class LoadAdmin(admin.ModelAdmin):
         Invoice.objects.filter(id__in=queryset).update(payment_status="G")
         
         #Move corresponding load images from media folder to associated load_reference named directory. Same
-        #folder as invoice.
+        #folder as invoice corresponding to a particular load.
         image_list = list(LoadImage.objects.filter(load_id__in=queryset))
         for image in image_list:
             src_path = "/Users/sm/Desktop/comp sci/personal projects/symport/media/" + str(image.image)
@@ -89,6 +89,8 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_filter = ['payment_status', InvoiceDateFilter]
     search_fields = ['id']
 
+
+    #custom admin action to automatically send invoices to customers for multiple loads, upon request from admin panel
     @admin.action(description="Send Invoice")
     def email_invoice(self, request, queryset):
         invoice_list = list(queryset)

@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'symport',
         'HOST': 'localhost',
         'USER': 'root',
-        'PASSWORD': 'Lailaha4'
+        'PASSWORD': '***'
     }
 }
 

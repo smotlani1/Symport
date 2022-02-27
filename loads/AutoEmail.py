@@ -5,30 +5,36 @@ from os import path
 import smtplib
 from email.message import EmailMessage
 
+#This function automatically sends emails to customers attached with the corresponding invoice and documents
 
 
+
+#Email credentials stored in local file
 with open('/Users/sm/Desktop/comp sci/personal projects/APIkeys/email_address.txt') as f:
     email_address = f.readline()
         
 
 with open('/Users/sm/Desktop/comp sci/personal projects/APIkeys/email_password.txt') as f:
     email_password = f.readline()
-    
+
+
+
 class Email:
-    # def __init__(self):
-    #     self.email_address = email_address
+
+    #Add all files in a given directory to a dictionary as a key and store file-type as value
+    #Allows for proper attachment when calling add_attachment method of the EmailMessage Class
 
     def get_files(self, files_dir):
-
         file_dict = {}
         for dir, folders, files in os.walk(files_dir):
             for file in files:
-                file_path = dir + file
+                file_path = dir + file #generate separate file path in dictionary for each individual file to be attached
                 file_type = os.path.splitext(file)[1]
                 file_dict[file_path] = file_type
         print(file_dict)
         return file_dict
 
+    #send_email generates the complete email with from, to, subject line, and attachments, and sends it
     def send_email(self, file_dict, load_ref):
         
         msg = EmailMessage()

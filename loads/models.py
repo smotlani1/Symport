@@ -7,7 +7,12 @@ from django.forms import DateTimeField
 from django.contrib.auth.models import User
 from .SupportingFunctions import get_distance_zips
 
-# Create your models here.
+
+#This app consists of the following Models: Customer, Driver, Load, Loadimage(images for certain loads)
+#and Invoice
+
+#Several string methods overwritten to make admin interface more readable. 
+
 class Customer(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
@@ -23,6 +28,8 @@ class Customer(models.Model):
 
 
 class Invoice(models.Model):
+    #Several status implements to assist with sorting and assisting with the workflow 
+    # from load creation to completion and payment
     STATUS_PAID_CHOICES = [
         ('N', "Not Invoiced"),
         ('G', "Generated"),
@@ -80,7 +87,7 @@ class Load(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     
-    #over ride save method to auto populate and calculate distance using google Maps API based function when 
+    #over ride save method to auto populate  distance using get_distanve function when 
     #adding load information at time of creation
     def save(self, *args, **kwargs):
         self.loaded_distance = get_distance_zips(self.start_zip, self.end_zip)
