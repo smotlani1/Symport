@@ -30,6 +30,7 @@ class LoadAdmin(admin.ModelAdmin):
     @admin.action(description="Create Invoices")
     def generate_invoices(self, request, queryset):
         load_list = list(queryset)
+        print(queryset)
 
         # Get load object and use it to autpopulate and create invoice with customer, load, and invoice data. Automatically 
         # create local directory based on load_reference number. 
@@ -39,9 +40,10 @@ class LoadAdmin(admin.ModelAdmin):
             new_invoice = Invoices(customer)
             new_invoice.add_item(load.load_reference, load.invoice.amount_invoiced, qty=1)
             new_invoice.create_invoice(directory, load.load_reference)
+            Invoice.objects.filter(id=load.invoice_id).update(payment_status="G") # For loads with created invoices,\n 
+                                                                                  # updates invoice status field to Generated(G) 
         
-        # For loads with created invoices, updates invoice status field to Generated(G) 
-        Invoice.objects.filter(id__in=queryset).update(payment_status="G")
+        
         
         #Move corresponding load images from media folder to associated load_reference named directory. Same
         #folder as invoice corresponding to a particular load.

@@ -20,4 +20,4 @@ class LoadSerializer(serializers.HyperlinkedModelSerializer):
     loadimage = LoadImageSerializer(many=True, read_only=True)
     class Meta:
         model = Load
-        fields = ['url', 'start_street', 'start_city', 'start_zip', 'loaded_distance', 'hazmat', 'load_reference', 'loadimage']
+        fields = ['id','start_street', 'start_city','start_state', 'start_zip', 'end_street', 'end_city','end_state', 'end_zip', 'loaded_distance', 'hazmat', 'load_reference', 'loadimage']

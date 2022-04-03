@@ -13,13 +13,15 @@ from .serializers import *
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-
-class ViewLoadViewSet(LoginRequiredMixin, GenericViewSet, RetrieveModelMixin, ListModelMixin):
+# Removed LoginRequiredMixin, 
+class ViewLoadViewSet(GenericViewSet, RetrieveModelMixin, ListModelMixin):
 
     serializer_class = LoadSerializer
+    # queryset = Load.objects.all()
 
+    # Re enable below portion to require login, and filter by user. 
     def get_queryset(self):
-        return Load.objects.filter(user_id=self.request.user) #Filtered to only show Users their own data, and not other users' data#
+        return Load.objects.filter(user=self.request.user) #Filtered to only show Users their own data, and not other users' data#
 
 
 class LoadImageViewSet(ModelViewSet):
