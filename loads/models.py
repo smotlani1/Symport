@@ -59,6 +59,8 @@ class Driver(models.Model):
     state = models.CharField(max_length=255)
     zip = models.CharField(max_length=255)
 
+    user = models.OneToOneField(User, on_delete=models.PROTECT, null=True)
+
 
     def __str__(self) -> str:
         return self.name

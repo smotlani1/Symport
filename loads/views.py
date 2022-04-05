@@ -1,7 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from itertools import product
 from django.shortcuts import get_list_or_404, get_object_or_404
-from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.mixins import *
