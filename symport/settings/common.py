@@ -15,9 +15,9 @@ from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# SECRET_KEY = 'django-insecure-lr#&kxg)3g91o@hc_s52u2h424w#u^wu57sf%burm)kx(29x0&'
-# Quick-start development settings - unsuitable for production
+
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # Application definition
