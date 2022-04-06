@@ -16,18 +16,9 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+# SECRET_KEY = 'django-insecure-lr#&kxg)3g91o@hc_s52u2h424w#u^wu57sf%burm)kx(29x0&'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-lr#&kxg)3g91o@hc_s52u2h424w#u^wu57sf%burm)kx(29x0&'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -64,7 +55,7 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': False,
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
+    # 'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
     'AUTH_HEADER_TYPES': ('JWT',),
     'USER_ID_FIELD': 'id',
@@ -107,18 +98,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'symport.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'symport',
-        'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': 'Lailaha4'
-    }
-}
 
 
 # Password validation

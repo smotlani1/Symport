@@ -17,6 +17,7 @@ pillow = "*"
 drf-nested-routers = "*"
 django-cors-headers = "*"
 googlemaps = "*"
+gunicorn = "*"
 
 [dev-packages]
 
