@@ -1,4 +1,3 @@
-from tkinter import image_names
 from django.contrib import admin
 from .models import *
 from datetime import date, timedelta
