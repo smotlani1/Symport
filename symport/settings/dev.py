@@ -1,6 +1,7 @@
 from .common import *
 
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -21,3 +22,8 @@ DATABASES = {
 }
 
 SIMPLE_JWT['SIGNING_KEY'] = SECRET_KEY
+
+GOOGLE_API_KEY = '/Users/sm/Desktop/comp sci/personal projects/APIkeys/GoogleAPI.txt'
+
+EMAIL_USER_DIR = '/Users/sm/Desktop/comp sci/personal projects/APIkeys/email_address.txt'
+EMAIL_PASS_DIR = '/Users/sm/Desktop/comp sci/personal projects/APIkeys/email_password.txt'

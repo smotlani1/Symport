@@ -1,20 +1,21 @@
-from fileinput import filename
-import imghdr
 import os
-from os import path
 import smtplib
 from email.message import EmailMessage
+from django.conf import settings
 
 #This function automatically sends emails to customers attached with the corresponding invoice and documents
 
 
 
 #Email credentials stored in local file
-with open('/Users/sm/Desktop/comp sci/personal projects/APIkeys/email_address.txt') as f:
+email_user_dir = settings.EMAIL_USER_DIR
+with open(email_user_dir) as f:
     email_address = f.readline()
         
 
-with open('/Users/sm/Desktop/comp sci/personal projects/APIkeys/email_password.txt') as f:
+email_pass_dir = settings.EMAIL_PASS_DIR
+
+with open(email_pass_dir) as f:
     email_password = f.readline()
 
 
