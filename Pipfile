@@ -18,6 +18,7 @@ drf-nested-routers = "*"
 django-cors-headers = "*"
 googlemaps = "*"
 gunicorn = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
