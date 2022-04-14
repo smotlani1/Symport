@@ -8,11 +8,13 @@ from django.conf import settings
 
 def get_distance_zips(origin_zip, dest_zip):
     #return api key store in local directory
-    api_dir = settings.GOOGLE_API_KEY
-    with open(api_dir) as f:
-        api_key = f.readline()
-        print(api_key)
-        f.close
+    # api_dir = settings.GOOGLE_API_KEY
+    # with open(api_dir) as f:
+    #     api_key = f.readline()
+    #     print(api_key)
+    #     f.close
+
+    api_key = settings.GOOGLE_API_KEY
 
     gmaps = googlemaps.Client(key=api_key)
     distanceMatrix = gmaps.distance_matrix(origin_zip, dest_zip)
