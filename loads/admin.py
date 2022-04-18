@@ -84,7 +84,7 @@ class InvoiceLoadsInLine(admin.TabularInline):
 
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
-    # actions = ['email_invoice']
+    actions = ['email_invoice']
     inlines = [InvoiceLoadsInLine]
     list_display = ['id']
     list_filter = ['payment_status', InvoiceDateFilter]
