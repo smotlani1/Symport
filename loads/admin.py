@@ -6,7 +6,7 @@ import openpyxl as xl
 from shutil import move
 
 
-# from .AutoEmail import Email
+from .AutoEmail import Email
 
 
 # Register your models here.
@@ -92,12 +92,12 @@ class InvoiceAdmin(admin.ModelAdmin):
 
 
     #custom admin action to automatically send invoices to customers for multiple loads, upon request from admin panel
-    # @admin.action(description="Send Invoice")
-    # def email_invoice(self, request, queryset):
-    #     invoice_list = list(queryset)
-    #     for invoice in invoice_list:
-    #         load_reference = invoice.LoadInvoice.get().load_reference
-    #         new_email = Email()
-    #         files_dir = "/Users/sm/Desktop/Symport/" + invoice.customer.name + "/" + load_reference + "/"
-    #         file_dict = new_email.get_files(files_dir)
-    #         new_email.send_email(file_dict, load_reference)
+    @admin.action(description="Send Invoice")
+    def email_invoice(self, request, queryset):
+        invoice_list = list(queryset)
+        for invoice in invoice_list:
+            load_reference = invoice.LoadInvoice.get().load_reference
+            new_email = Email()
+            # files_dir = "/Users/sm/Desktop/Symport/" + invoice.customer.name + "/" + load_reference + "/"
+            # file_dict = new_email.get_files(files_dir)
+            new_email.send_email({}, load_reference)
