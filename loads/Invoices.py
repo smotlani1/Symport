@@ -1,5 +1,12 @@
-import openpyxl as xl
 import os
+from io import BytesIO
+from django.conf import settings
+import openpyxl as xl
+from tempfile import NamedTemporaryFile
+import boto3
+
+
+s3 = boto3.client('s3',  aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY, region_name='us-east-1')
 
 
 # This script creates a basic excel invoice. Class InvoiceItems and Customers store relevant invoice data based on user input
@@ -33,26 +40,42 @@ class Invoices():
     def add_item(self, description, unit_price, qty):
         self.item_list.append(InvoiceItem(description, qty, unit_price))
 
-    # Determine where the invoice should be saved to on the local drive. Create new directory based on user input
+    # Determine where the invoice should be saved in the aws s3 bucket. Creates new directory based on user input
     # if one does not already exist
     def create_directory(self, directory):
-        parent_dir = "/Users/sm/Desktop/Symport"
-        path = os.path.join(parent_dir, directory)
-        if os.path.isdir(path):
-            return path
-        os.makedirs(path)
+        parent_dir = "loads/"
+        path = parent_dir + directory
         return path
 
+
+        # parent_dir = "/Users/sm/Desktop/Symport"
+        # path = os.path.join(parent_dir, directory)
+        # if os.path.isdir(path):
+        #     return path
+        # os.makedirs(path)
+        # return path
+
+
+
+
+
     # this function generates the final invoice using information passed through from the functions above. 
-    # The function uses a pre generated excel template. 
+    # The function uses a pre generated excel template stored in the parent directory. 
     def create_invoice(self, directory, file_name):
         
         path = self.create_directory(directory)
 
-        template_path = "/Users/sm/Desktop/Symport/Invoices"
-        template_file_name = "/Symport_Invoice_Template.xlsx"
-        wb = xl.load_workbook(template_path + template_file_name)
+        s3_data = s3.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key='Symport_Invoice_Template.xlsx')
+        contents = s3_data['Body'].read()
+        wb = xl.load_workbook(filename=(BytesIO(contents)), data_only=True)
         sheet = wb["Invoice"]
+        
+
+        #Code for working with files on local drive
+        # template_path = "/Users/sm/Desktop/Symport/Invoices"
+        # template_file_name = "/Symport_Invoice_Template.xlsx"
+        # wb = xl.load_workbook(template_path + template_file_name)
+        # sheet = wb["Invoice"]
 
 
         sheet.cell(row=8, column=1).value = self.customer.name
@@ -70,13 +93,21 @@ class Invoices():
             sheet.cell(row=row_increment, column=7).value = item.unit_price
             row_increment += 1
 
-        wb.save(path + "/" + file_name + ".xlsx")
+        with NamedTemporaryFile() as tmp:
+            wb.save(tmp.name)
+            output = BytesIO(tmp.read())
+            s3.put_object(Body=output, Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=(path + "/" + file_name + ".xlsx"))
+        
+        
+        # wb.save(path + "/" + file_name + ".xlsx")
 
 
 
 
-# customer = Customer("detailed", "9219 Knight Ave", "Des Plaines", "IL", "60016", "77334994", "smotlani@yahoo.com")
-# invoice = Invoice(customer, "Symport1")
+
+
+# customer = Customers("detailed", "9219 Knight Ave", "Des Plaines", "IL", "60016", "77334994", "smotlani@yahoo.com")
+# invoice = Invoices(customer)
 # invoice.add_item("load12345", 1, 350)
 # invoice.add_item("detention", 2, 50)
-# invoice.create_invoice()
+# invoice.create_invoice('AGT', 'a')

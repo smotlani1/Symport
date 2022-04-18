@@ -16,7 +16,7 @@ class LoadImageInLine(admin.TabularInline):
 
 @admin.register(Load)
 class LoadAdmin(admin.ModelAdmin):
-    # actions = ["generate_invoices"]
+    actions = ["generate_invoices"]
     list_display = ['load_reference']
     search_fields = ['load_reference']
     inlines = [LoadImageInLine]
@@ -26,21 +26,21 @@ class LoadAdmin(admin.ModelAdmin):
         return super(Load, self).get_queryset(request).select_related('invoice').select_related("customer")
 
     #Custom admin action to generate multiple invoices for several loads at once. Takes input from admin request
-    # @admin.action(description="Create Invoices")
-    # def generate_invoices(self, request, queryset):
-    #     load_list = list(queryset)
+    @admin.action(description="Create Invoices")
+    def generate_invoices(self, request, queryset):
+        load_list = list(queryset)
     #     print(queryset)
 
     #     # Get load object and use it to autpopulate and create invoice with customer, load, and invoice data. Automatically 
     #     # create local directory based on load_reference number. 
-    #     for load in load_list:
-    #         directory = load.customer.name + "/" + load.load_reference
-    #         customer = Customers(load.customer.name, load.customer.street, load.customer.city, load.customer.state, load.customer.zip, load.customer.phone, load.customer.email)
-    #         new_invoice = Invoices(customer)
-    #         new_invoice.add_item(load.load_reference, load.invoice.amount_invoiced, qty=1)
-    #         new_invoice.create_invoice(directory, load.load_reference)
-    #         Invoice.objects.filter(id=load.invoice_id).update(payment_status="G") # For loads with created invoices,\n 
-    #                                                                               # updates invoice status field to Generated(G) 
+        for load in load_list:
+            directory = load.customer.name + "/" + load.load_reference
+            customer = Customers(load.customer.name, load.customer.street, load.customer.city, load.customer.state, load.customer.zip, load.customer.phone, load.customer.email)
+            new_invoice = Invoices(customer)
+            new_invoice.add_item(load.load_reference, load.invoice.amount_invoiced, qty=1)
+            new_invoice.create_invoice(directory, load.load_reference)
+            Invoice.objects.filter(id=load.invoice_id).update(payment_status="G") # For loads with created invoices,\n 
+                                                                                  # updates invoice status field to Generated(G) 
         
         
         
