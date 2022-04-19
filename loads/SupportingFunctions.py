@@ -1,7 +1,7 @@
 from http import server
 import googlemaps
 from django.conf import settings
-print(settings.GOOGLE_API_KEY)
+
 
 
 # get_distance_zips uses a google API to return a distance, in miles, when provided with a start and destination zip code

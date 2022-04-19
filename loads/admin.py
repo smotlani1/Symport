@@ -4,6 +4,7 @@ from datetime import date, timedelta
 from .Invoices import InvoiceItem, Customers, Invoices
 import openpyxl as xl
 from shutil import move
+from django.conf import settings
 
 
 from .AutoEmail import Email
@@ -98,6 +99,5 @@ class InvoiceAdmin(admin.ModelAdmin):
         for invoice in invoice_list:
             load_reference = invoice.LoadInvoice.get().load_reference
             new_email = Email()
-            # files_dir = "/Users/sm/Desktop/Symport/" + invoice.customer.name + "/" + load_reference + "/"
-            # file_dict = new_email.get_files(files_dir)
-            new_email.send_email({}, load_reference)
+            files_dir = 'loads/' + invoice.customer.name + "/" + load_reference
+            new_email.send_email(files_dir, load_reference)
