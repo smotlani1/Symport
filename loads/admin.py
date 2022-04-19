@@ -98,6 +98,13 @@ class InvoiceAdmin(admin.ModelAdmin):
         invoice_list = list(queryset)
         for invoice in invoice_list:
             load_reference = invoice.LoadInvoice.get().load_reference
+            load_id = invoice.LoadInvoice.get().id
+            
+            image_list = list(LoadImage.objects.filter(load_id=load_id))
+            attachments = []
+            for item in image_list:
+                attachments.append(item.image)
+
             new_email = Email()
             files_dir = 'loads/' + invoice.customer.name + "/" + load_reference
-            new_email.send_email(files_dir, load_reference)
+            new_email.send_email(files_dir, load_reference, attachments)

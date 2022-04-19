@@ -11,12 +11,18 @@ s3 = boto3.client('s3',  aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secre
 
 class Email:
 
-    def send_email(self, file_dir, load_ref):
+    def send_email(self, file_dir, load_ref, attachments):
         
         msg = EmailMessage()
         msg ['Subject'] = "Invoice and POD for Load " + load_ref
         msg['From'] = settings.EMAIL_USER
         msg['To'] = 'motlani.saqib@gmail.com'
+
+        for item in attachments:
+            s3_data = s3.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'{item}')
+            contents = s3_data['Body'].read()
+            msg.add_attachment(contents, maintype='image', subtype='jpg', filename=load_ref + "POD")
+
 
         #Iterates items in a given file of the bucket, determines filetype (i.e xlsx, jpg, etc) and attaches all files to email message
 
