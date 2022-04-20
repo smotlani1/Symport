@@ -168,4 +168,5 @@ LOGIN_URL = '/login'
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    'https://symport-frontend.herokuapp.com/',
 ]
