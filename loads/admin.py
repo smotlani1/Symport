@@ -18,13 +18,14 @@ class LoadImageInLine(admin.TabularInline):
 @admin.register(Load)
 class LoadAdmin(admin.ModelAdmin):
     actions = ["generate_invoices"]
-    list_display = ['load_reference']
+    list_display = ['load_reference', 'invoice']
+    list_select_related = ['driver', 'customer', 'invoice']
     search_fields = ['load_reference']
     inlines = [LoadImageInLine]
     
     #Override base queryset to select related foreign key fields to reduce number of queries. 
-    def queryset(self, request):
-        return super(Load, self).get_queryset(request).select_related('invoice').select_related("customer")
+    # def queryset(self, request):
+    #     return super(Load, self).get_queryset(request).select_related('invoice').select_related("customer")
 
     #Custom admin action to generate multiple invoices for several loads at once. Takes input from admin request
     @admin.action(description="Create Invoices")
@@ -45,13 +46,6 @@ class LoadAdmin(admin.ModelAdmin):
         
         
         
-    #     #Move corresponding load images from media folder to associated load_reference named directory. Same
-    #     #folder as invoice corresponding to a particular load.
-    #     image_list = list(LoadImage.objects.filter(load_id__in=queryset))
-    #     for image in image_list:
-    #         src_path = "/Users/sm/Desktop/comp sci/personal projects/symport/media/" + str(image.image)
-    #         dest_path = "/Users/sm/Desktop/Symport/" + image.load.customer.name + "/" + image.load.load_reference
-    #         move(src_path, dest_path)
 
     
 
@@ -87,7 +81,7 @@ class InvoiceLoadsInLine(admin.TabularInline):
 class InvoiceAdmin(admin.ModelAdmin):
     actions = ['email_invoice']
     inlines = [InvoiceLoadsInLine]
-    list_display = ['id']
+    list_display = ['id', 'customer']
     list_filter = ['payment_status', InvoiceDateFilter]
     search_fields = ['id']
 
@@ -108,3 +102,16 @@ class InvoiceAdmin(admin.ModelAdmin):
             new_email = Email()
             files_dir = 'loads/' + invoice.customer.name + "/" + load_reference
             new_email.send_email(files_dir, load_reference, attachments)
+
+            invoice.payment_status="I"
+            invoice.save()
+    
+    
+    
+    #     #Move corresponding load images from media folder to associated load_reference named directory. Same
+    #     #folder as invoice corresponding to a particular load.
+    #     image_list = list(LoadImage.objects.filter(load_id__in=queryset))
+    #     for image in image_list:
+    #         src_path = "/Users/sm/Desktop/comp sci/personal projects/symport/media/" + str(image.image)
+    #         dest_path = "/Users/sm/Desktop/Symport/" + image.load.customer.name + "/" + image.load.load_reference
+    #         move(src_path, dest_path)
