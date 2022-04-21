@@ -166,10 +166,10 @@ INTERNAL_IPS = [
 LOGIN_REDIRECT_URL = '/loads/viewloads'
 LOGIN_URL = '/login'
 
-CORS_ALLOW_ALL_ORIGINS: True
+# CORS_ALLOW_ALL_ORIGINS: True
 
-# CORS_ORIGIN_WHITELIST = [
+CORS_ORIGIN_WHITELIST = [
     
-#     # 'http://localhost:3000',
-#     # 'https://symport-frontend.herokuapp.com/',
-# ]
+    # 'http://localhost:3000',
+    'https://symport-frontend.herokuapp.com/',
+]
