@@ -23,3 +23,8 @@ EMAIL_PASS = os.environ['EMAIL_PASS']
 ALLOWED_HOSTS = ['symport-prod.herokuapp.com']
 
 SIMPLE_JWT['SIGNING_KEY'] = SECRET_KEY
+
+CORS_ORIGIN_WHITELIST = [
+    
+    'https://symport-frontend.herokuapp.com/',
+]
