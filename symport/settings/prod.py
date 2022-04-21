@@ -26,5 +26,5 @@ SIMPLE_JWT['SIGNING_KEY'] = SECRET_KEY
 
 CORS_ORIGIN_WHITELIST = [
     
-    'https://symport-frontend.herokuapp.com/',
+    'https://symport-frontend.herokuapp.com',
 ]
