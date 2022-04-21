@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('playground/', include('playground.urls')),
     path('loads/', include('loads.urls')),
-    path('logbook/', include('logbook.urls')),
+    path('logbook/', include('logbook2.urls')),
     path('api/', include('authentication.urls')),
     path('', include('django.contrib.auth.urls')),
     path('__debug__/', include(debug_toolbar.urls)),

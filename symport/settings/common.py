@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'loads',
-    'logbook',
+    'logbook2',
     'register',
     'authentication',
     'playground',

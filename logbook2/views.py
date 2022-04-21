@@ -1,9 +1,9 @@
 from rest_framework.viewsets import *
 from django.http import HttpResponse
 from django.shortcuts import render
-from logbook.models import LogbookEntry
+from logbook2.models import LogbookEntry2
 
-from logbook.serializers import LogbookEntrySerializer
+from logbook2.serializers import LogbookEntrySerializer
 
 # Create your views here.
 class LogbookEntryViewSet(ModelViewSet):
@@ -11,4 +11,4 @@ class LogbookEntryViewSet(ModelViewSet):
     # queryset = LogbookEntry.objects.all()
 
     def get_queryset(self):
-        return LogbookEntry.objects.filter(logbook_id__driver_id=self.request.user.driver.id)
+        return LogbookEntry2.objects.filter(logbook_id__driver_id=self.request.user.driver.id)
