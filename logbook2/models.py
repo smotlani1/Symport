@@ -17,7 +17,9 @@ class LogbookEntry2(models.Model):
     end_time = models.CharField(max_length=255)
     driving_hours = models.CharField(max_length=255)
     total_hours = models.CharField(max_length=255)
-    logbook = models.ForeignKey(Logbook2, on_delete=models.PROTECT)
+    logbook = models.ForeignKey(Logbook2, on_delete=models.PROTECT, null=True)
+
+    
 
     class Meta:
         ordering = ['id']
